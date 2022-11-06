@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PaymentMethodController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +18,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dashboard'); //leffler.yasmin@example.net
 });
 
 Route::resource('payment-method', PaymentMethodController::class);
+
+Route::get('login', [AuthController::class, 'showForm'])->name('login.form');
+
+Route::post('login', [AuthController::class, 'login'])->name('login');
+
+Route::get('logout', [AuthController::class, ''])->name('logout');
+
+Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');

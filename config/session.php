@@ -9,7 +9,7 @@ return [
     | Default Session Driver
     |--------------------------------------------------------------------------
     |
-    | This option controls the default session "driver" that will be used on
+    | This option controls the default auth "driver" that will be used on
     | requests. By default, we will use the lightweight native driver but
     | you may specify any of the other wonderful drivers provided here.
     |
@@ -25,7 +25,7 @@ return [
     | Session Lifetime
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the number of minutes that you wish the session
+    | Here you may specify the number of minutes that you wish the auth
     | to be allowed to remain idle before it expires. If you want them
     | to immediately expire on the browser closing, set that option.
     |
@@ -40,7 +40,7 @@ return [
     | Session Encryption
     |--------------------------------------------------------------------------
     |
-    | This option allows you to easily specify that all of your session data
+    | This option allows you to easily specify that all of your auth data
     | should be encrypted before it is stored. All encryption will be run
     | automatically by Laravel and you can use the Session like normal.
     |
@@ -53,7 +53,7 @@ return [
     | Session File Location
     |--------------------------------------------------------------------------
     |
-    | When using the native session driver, we need a location where session
+    | When using the native auth driver, we need a location where auth
     | files may be stored. A default has been set for you but a different
     | location may be specified. This is only needed for file sessions.
     |
@@ -66,7 +66,7 @@ return [
     | Session Database Connection
     |--------------------------------------------------------------------------
     |
-    | When using the "database" or "redis" session drivers, you may specify a
+    | When using the "database" or "redis" auth drivers, you may specify a
     | connection that should be used to manage these sessions. This should
     | correspond to a connection in your database configuration options.
     |
@@ -79,7 +79,7 @@ return [
     | Session Database Table
     |--------------------------------------------------------------------------
     |
-    | When using the "database" session driver, you may specify the table we
+    | When using the "database" auth driver, you may specify the table we
     | should use to manage the sessions. Of course, a sensible default is
     | provided for you; however, you are free to change this as needed.
     |
@@ -92,7 +92,7 @@ return [
     | Session Cache Store
     |--------------------------------------------------------------------------
     |
-    | While using one of the framework's cache driven session backends you may
+    | While using one of the framework's cache driven auth backends you may
     | list a cache store that should be used for these sessions. This value
     | must match with one of the application's configured cache "stores".
     |
@@ -107,7 +107,7 @@ return [
     | Session Sweeping Lottery
     |--------------------------------------------------------------------------
     |
-    | Some session drivers must manually sweep their storage location to get
+    | Some auth drivers must manually sweep their storage location to get
     | rid of old sessions from storage. Here are the chances that it will
     | happen on a given request. By default, the odds are 2 out of 100.
     |
@@ -120,9 +120,9 @@ return [
     | Session Cookie Name
     |--------------------------------------------------------------------------
     |
-    | Here you may change the name of the cookie used to identify a session
+    | Here you may change the name of the cookie used to identify a auth
     | instance by ID. The name specified here will get used every time a
-    | new session cookie is created by the framework for every driver.
+    | new auth cookie is created by the framework for every driver.
     |
     */
 
@@ -136,7 +136,7 @@ return [
     | Session Cookie Path
     |--------------------------------------------------------------------------
     |
-    | The session cookie path determines the path for which the cookie will
+    | The auth cookie path determines the path for which the cookie will
     | be regarded as available. Typically, this will be the root path of
     | your application but you are free to change this when necessary.
     |
@@ -149,7 +149,7 @@ return [
     | Session Cookie Domain
     |--------------------------------------------------------------------------
     |
-    | Here you may change the domain of the cookie used to identify a session
+    | Here you may change the domain of the cookie used to identify a auth
     | in your application. This will determine which domains the cookie is
     | available to in your application. A sensible default has been set.
     |
@@ -162,7 +162,7 @@ return [
     | HTTPS Only Cookies
     |--------------------------------------------------------------------------
     |
-    | By setting this option to true, session cookies will only be sent back
+    | By setting this option to true, auth cookies will only be sent back
     | to the server if the browser has a HTTPS connection. This will keep
     | the cookie from being sent to you when it can't be done securely.
     |
