@@ -11,9 +11,9 @@ class PaymentMethodRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,10 +21,11 @@ class PaymentMethodRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'payment_method' => ['bail', 'string', 'required'],
+            'is_default' => ['bail', 'nullable'],
         ];
     }
 }

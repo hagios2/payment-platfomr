@@ -7,39 +7,45 @@ use App\Repositories\UserPaymentMethodRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class PaymentMethodController extends Controller
 {
     public function __construct(private UserPaymentMethodRepository $repository)
     {
+        $this->middleware('auth');
     }
 
-    public function index()
+    public function index(): Factory|View|Application
     {
         $paymentMethods = $this->repository->getUserPaymentMethods();
 
-        return view('', compact('paymentMethods'));
+        return view('payment_method.index', compact('paymentMethods'));
     }
 
-    public function create(): Factory|View|Application
-    {
-        return view('');
-    }
+    public function create()
+    {}
 
     public function store(PaymentMethodRequest $request): RedirectResponse
     {
-        $this->repository->storePaymentMethod($request);
+        if ($this->repository->getExistingPaymentMethod($request->safe()->payment_method)) {
+            return back()->with('error', 'The selected payment method has already been added');
+        }
 
-        return redirect()->route('');
+        $newPaymentMethod = $this->repository->storePaymentMethod($request);
+
+        if ($request->filled('is_default') && $request->safe()->is_default === '1') {
+            $this->repository->removeDefault($newPaymentMethod->id);
+        }
+
+        return redirect()->route('payment-method.index')->with('success', 'Payment Method saved successfully');
     }
 
-    public function show($id)
+    public function show($id): JsonResponse
     {
-
+        return response()->json(['payment_method' => $this->repository->findById($id)]);
     }
-
 
     public function edit($id): Factory|View|Application
     {
@@ -48,19 +54,18 @@ class PaymentMethodController extends Controller
         return view('', $paymentMethod);
     }
 
-
     public function update(PaymentMethodRequest $request, $id): RedirectResponse
     {
+        dd($id);
         $this->repository->updatePaymentMethod($request, $id);
 
-        return redirect()->route('');
+        return redirect()->route('payment-method.index')->with('success', 'Payment method updated successfully');
     }
-
 
     public function destroy($id): RedirectResponse
     {
         $this->repository->deletePaymentMethod($id);
 
-        return redirect()->route('');
+        return redirect()->route('payment-method.index')->with('success', 'Payment Method Deleted Successfully');
     }
 }

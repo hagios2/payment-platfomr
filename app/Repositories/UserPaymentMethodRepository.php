@@ -21,11 +21,11 @@ class UserPaymentMethodRepository
         return UserPaymentMethod::find($id);
     }
 
-    public function getDefaultPaymentMethod(): Model|Builder|null
+    public function getExistingPaymentMethod($payment_method): Model|Builder|null
     {
         return UserPaymentMethod::query()
             ->where('user_id', auth()->id())
-            ->where('is_default', true)
+            ->where('payment_method', $payment_method)
             ->first();
     }
 
@@ -51,5 +51,14 @@ class UserPaymentMethodRepository
         UserPaymentMethod::query()
             ->where('id', $id)
             ?->delete();
+    }
+
+    public function removeDefault(int $id): void
+    {
+        UserPaymentMethod::query()
+            ->where('user_id', auth()->id())
+            ->where('id', '!=', $id)
+            ->where('is_default', true)
+            ?->update(['is_default' => false]);
     }
 }
