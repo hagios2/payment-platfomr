@@ -56,7 +56,6 @@ class PaymentMethodController extends Controller
 
     public function update(PaymentMethodRequest $request, $id): RedirectResponse
     {
-        dd($id);
         $this->repository->updatePaymentMethod($request, $id);
 
         return redirect()->route('payment-method.index')->with('success', 'Payment method updated successfully');

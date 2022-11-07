@@ -23,6 +23,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'customer_id',
+        'source'
     ];
 
     /**
@@ -52,5 +54,15 @@ class User extends Authenticatable
     public function addPaymentMethod($paymentMethod): Model
     {
         return $this->paymentMethod()->create($paymentMethod);
+    }
+
+    public function transaction(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function addTransaction($transaction): Model
+    {
+        return $this->transaction()->create($transaction);
     }
 }
