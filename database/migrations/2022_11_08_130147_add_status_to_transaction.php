@@ -14,7 +14,7 @@ class AddStatusToTransaction extends Migration
     public function up()
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->enum('status', ['pending', 'success', 'failed'])->default('pending');
+            $table->enum('status', ['pending', 'success', 'failed', 'refunded'])->default('pending');
             $table->enum('type', ['charge', 'refund'])->default('charge');
         });
     }

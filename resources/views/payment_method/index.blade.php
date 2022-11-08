@@ -112,10 +112,8 @@
     <script>
         $('#flexSwitchCheckDefault').on('click', function () {
             if ($(this).prop('checked')) {
-                alert('me here')
                 $('#flexSwitchCheckDefault').val(1);
             } else {
-                alert('me there')
                 $('#flexSwitchCheckDefault').val(0);
             }
         });

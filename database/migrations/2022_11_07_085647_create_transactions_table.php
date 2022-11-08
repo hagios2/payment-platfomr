@@ -18,7 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->string('charge_id');
             $table->foreignId('user_id')->constrained();
             $table->decimal('amount', 20);
-            $table->enum('currency', ['ngn', 'ghs', 'usd']);
+            $table->enum('currency', ['ngn', 'gbp', 'usd', 'euro']);
             $table->text('description')->nullable();
             $table->string('reference')->unique();
             $table->timestamps();

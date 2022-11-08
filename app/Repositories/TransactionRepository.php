@@ -13,23 +13,26 @@ class TransactionRepository
         return Transaction::find($id);
     }
 
-    public function storeTransaction($data, string $status, string $type)
+    public function storeTransaction($data, string $status, string $type): void
     {
-        $user = User::find(1);
-
         $data['reference'] = 'REF/STR/' . rand(10000, 9999999);
         $data['type'] = $type;
         $data['status'] = $status;
 
-        $user->addTransaction($data);
+        auth()->user()->addTransaction($data);
+    }
+
+    public function updateTransactionStatusToRefunded(int $id): void
+    {
+        Transaction::query()
+            ->where('id', $id)
+            ?->update(['status' => 'refunded']);
     }
 
     public function fetchTransactions(): LengthAwarePaginator
     {
-        $user = User::find(1);
-
         return Transaction::query()
-            ->where('user_id', $user->id)
-            ->latest()->paginate(15);
+            ->where('user_id', auth()->id())
+            ->latest()->paginate(5);
     }
 }

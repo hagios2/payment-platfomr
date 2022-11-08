@@ -6,7 +6,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,7 +33,7 @@ class AuthController extends Controller
         }
     }
 
-    public function destroy(): Redirector|Application|RedirectResponse
+    public function logout(): Redirector|Application|RedirectResponse
     {
         Auth::logout();
 

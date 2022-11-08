@@ -2,15 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\Interfaces\PaymentGateway;
-use Stripe\BankAccount;
-use Stripe\Card;
 use Stripe\Charge;
-use Stripe\Customer;
 use Stripe\Refund;
-use Stripe\Source;
 use Stripe\StripeClient;
 use Stripe\Token;
 
@@ -26,9 +21,7 @@ class StripeService implements PaymentGateway
 
     public function charge($paymentData): Charge
     {
-        $user = User::find(1);
-
-        $paymentData['customer'] = $user->customer_id;
+        $paymentData['customer'] = auth()->user()->customer_id;
 
         return $this->stripeClient->charges->create($paymentData);
     }
@@ -64,15 +57,9 @@ class StripeService implements PaymentGateway
 
     public function createCard(string $customerId, string $source)
     {
-        $card = $this->stripeClient->customers->createSource(
+        $this->stripeClient->customers->createSource(
             $customerId,
             ['source' => $source]
         );
-
-        dump($card);
-
-//        $this->userRepository->storeCustomerData([
-//            'source' => $card->source
-//        ]);
     }
 }

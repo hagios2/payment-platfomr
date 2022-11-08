@@ -62,6 +62,14 @@
             <span class="nav-link-text ms-1">Payment Methods</span>
         </a>
       </li>
+        <li class="nav-item pb-2">
+            <a class="nav-link {{ (Request::is('transactions') ? 'active' : '') }}" href="{{ route('transactions') }}">
+                <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('transactions') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+                </div>
+                <span class="nav-link-text ms-1">Transactions</span>
+            </a>
+        </li>
 {{--      <li class="nav-item mt-2">--}}
 {{--        <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Example pages</h6>--}}
 {{--      </li>--}}
