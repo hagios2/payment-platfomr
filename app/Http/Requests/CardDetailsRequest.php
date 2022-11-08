@@ -26,7 +26,7 @@ class CardDetailsRequest extends FormRequest
         return [
             'number' => 'bail|numeric|required',
             'exp_month' => 'bail|integer|required',
-            'year' => 'bail|required|integer',
+            'exp_year' => 'bail|required|integer',
             'cvc' => 'bail|required|string',
         ];
     }

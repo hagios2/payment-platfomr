@@ -28,7 +28,7 @@ class StripeService implements PaymentGateway
     {
         $user = User::find(1);
 
-        $paymentData['customer'] = $user->fresh()->customer_id;
+        $paymentData['customer'] = $user->customer_id;
 
         return $this->stripeClient->charges->create($paymentData);
     }
@@ -49,6 +49,8 @@ class StripeService implements PaymentGateway
 
         $token = $this->createToken($cardDetails);
 
+        $this->createCard($customer->id, $token->id);
+
         $this->userRepository->storeCustomerData([
             'customer_id' => $customer->id,
             'source' => $token->id
@@ -57,16 +59,14 @@ class StripeService implements PaymentGateway
 
     public function createToken($cardDetails): Token
     {
-        return $this->stripeClient->tokens->create([
-            'card' => $cardDetails
-        ]);
+        return $this->stripeClient->tokens->create($cardDetails);
     }
 
-    public function createCard(string $customerId)
+    public function createCard(string $customerId, string $source)
     {
         $card = $this->stripeClient->customers->createSource(
             $customerId,
-            ['source' => 'test_work']
+            ['source' => $source]
         );
 
         dump($card);

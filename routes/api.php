@@ -23,3 +23,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('make-payment', [PaymentController::class, 'initStripePayment']);
 
 Route::post('add/card-details', [PaymentController::class, 'addCardDetails']);
+
+Route::post('refund/{transaction}/charge', [PaymentController::class, 'refundStripePayment']);
