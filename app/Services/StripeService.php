@@ -11,29 +11,27 @@ use Stripe\Token;
 
 class StripeService implements PaymentGateway
 {
-    public function __construct(
-        private StripeClient $stripeClient,
-        private UserRepository $userRepository
-    )
+    public function __construct(private StripeClient $stripeClient)
     {
         $this->stripeClient = new StripeClient(env('STRIPE_SEC_KEY'));
     }
 
-    public function charge($paymentData): Charge
+    public function charge($paymentData): string
     {
         $paymentData['customer'] = auth()->user()->customer_id;
+        $charge = $this->stripeClient->charges->create($paymentData);
 
-        return $this->stripeClient->charges->create($paymentData);
+        return $charge->id;
     }
 
-    public function refund($chargeId): Refund
+    public function refund($chargeId): string
     {
-        return $this->stripeClient->refunds->create([
-            'charge' => $chargeId,
-        ]);
+        $refund = $this->stripeClient->refunds->create(['charge' => $chargeId]);
+
+        return $refund->status;
     }
 
-    public function createCustomer($user, $cardDetails)
+    public function createCustomer($user, $cardDetails): array
     {
         $customer = $this->stripeClient->customers->create([
             'name' => $user->name,
@@ -42,17 +40,19 @@ class StripeService implements PaymentGateway
 
         $token = $this->createToken($cardDetails);
 
-        $this->createCard($customer->id, $token->id);
+        $this->createCard($customer->id, $token);
 
-        $this->userRepository->storeCustomerData([
+        return [
             'customer_id' => $customer->id,
-            'source' => $token->id
-        ]);
+            'source' => $token
+        ];
     }
 
-    public function createToken($cardDetails): Token
+    public function createToken($cardDetails): string
     {
-        return $this->stripeClient->tokens->create($cardDetails);
+        $token = $this->stripeClient->tokens->create($cardDetails);
+
+        return $token->id;
     }
 
     public function createCard(string $customerId, string $source)

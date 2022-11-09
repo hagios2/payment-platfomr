@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CardDetailsRequest;
 use App\Http\Requests\PaymentRequest;
 use App\Repositories\TransactionRepository;
+use App\Repositories\UserRepository;
 use App\Services\Interfaces\PaymentGateway;
 use App\Services\StripeService;
 use Illuminate\Contracts\Foundation\Application;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
-    public function __construct()
+    public function __construct(private UserRepository $userRepository)
     {
         $this->middleware('auth');
     }
@@ -27,16 +28,18 @@ class PaymentController extends Controller
         return view('transactions.index', compact('transactions'));
     }
 
-    public function addCardDetails(CardDetailsRequest $request, StripeService $stripeService)
+    public function addCardDetails(CardDetailsRequest $request, StripeService $stripeService): RedirectResponse
     {
-        $stripeService->createCustomer(auth()->user(), [
+        $customerData = $stripeService->createCustomer(auth()->user(), [
             'card' => $request->validated()
         ]);
+
+        $this->userRepository->storeCustomerData($customerData);
 
         return redirect()->route('transactions')->with('success', 'card details added successfully');
     }
 
-    public function initStripePayment(PaymentRequest $request, StripeService $stripeService, TransactionRepository $repository)
+    public function initStripePayment(PaymentRequest $request, StripeService $stripeService, TransactionRepository $repository): RedirectResponse
     {
         if (!auth()->user()->customer_id && !auth()->user()->source)
         {
@@ -83,11 +86,9 @@ class PaymentController extends Controller
         }
     }
 
-    public function makePayment(PaymentGateway $paymentGateway, array $data)
+    public function makePayment(PaymentGateway $paymentGateway, array $data): array
     {
-        $response = $paymentGateway->charge($data);
-
-        $data['charge_id'] = $response->id;
+        $data['charge_id'] = $paymentGateway->charge($data);
 
         return $data;
     }

@@ -63,20 +63,6 @@ class PaymentMethodTest extends TestCase
 
         $attributes['user_id'] = $user->id;
         $this->assertDatabaseHas((new UserPaymentMethod())->getTable(), $attributes);
-
-//        mock()->shouldReceive('createCustomer')
-//            ->andReturn([]);
-//
-//        $response = $this->post('add/card-details', [
-//            'number' => '4242424242424242',
-//            'exp_month' => 11,
-//            'exp_year' => 2023,
-//            'cvc' => '314'
-//        ])
-//        ->assertStatus(200);
-//
-//        $this->assertNotNull($user->fresh()->customer_id);
-//        $this->assertNotNull($user->fresh()->source);
     }
 
     public function testAUserOverrideTheDefaultPaymentMethod()

@@ -60,6 +60,6 @@ class UserPaymentMethodRepository
             ->where('user_id', auth()->id())
             ->where('id', '!=', $id)
             ->where('is_default', true)
-            ->update(['is_default' => false]);
+            ?->update(['is_default' => false]);
     }
 }
