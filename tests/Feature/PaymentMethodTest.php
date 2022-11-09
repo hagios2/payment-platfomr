@@ -58,7 +58,7 @@ class PaymentMethodTest extends TestCase
 
         $this->post('payment-method', $attributes)
             ->assertStatus(302)
-            ->assertRedirect('/payment-method')->dumpSession()
+            ->assertRedirect('/payment-method')
             ->assertSessionHas('success', 'Payment Method saved successfully');
 
         $attributes['user_id'] = $user->id;
@@ -104,7 +104,7 @@ class PaymentMethodTest extends TestCase
 
         $this->post('payment-method', $newAttributes)
             ->assertStatus(302)
-            ->assertRedirect('/payment-method')->dumpSession()
+            ->assertRedirect('/payment-method')
             ->assertSessionHas('success', 'Payment Method saved successfully');
 
         $newAttributes['user_id'] = $user->id;
@@ -136,7 +136,7 @@ class PaymentMethodTest extends TestCase
 
         //add the same payment method again
         $this->post('payment-method', $attributes)
-            ->assertStatus(302)->dumpSession()
+            ->assertStatus(302)
             ->assertSessionHas('error', 'The selected payment method has already been added');
     }
 
@@ -198,7 +198,7 @@ class PaymentMethodTest extends TestCase
         $paymentMethod = UserPaymentMethod::find(1);
         $this->put("payment-method/{$paymentMethod->id}", $newAttributes)
             ->assertStatus(302)
-            ->assertRedirect('/payment-method')->dumpSession()
+            ->assertRedirect('/payment-method')
             ->assertSessionHas('success', 'Payment method updated successfully');
 
         $newAttributes['user_id'] = $user->id;
@@ -265,6 +265,5 @@ class PaymentMethodTest extends TestCase
             ->assertJson([
                 'payment_method' => $attributes
             ]);
-
     }
 }
