@@ -17,6 +17,7 @@
 {{--                  <p class="mb-0">Password <b>secret</b></p>--}}
                 </div>
                 <div class="card-body">
+                    @include('includes.error')
                   <form role="form" method="POST" action="{{route('login')}}">
                     @csrf
                     <label>Email</label>

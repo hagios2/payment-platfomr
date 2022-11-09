@@ -35,7 +35,7 @@ class PaymentMethodController extends Controller
 
         $newPaymentMethod = $this->repository->storePaymentMethod($request);
 
-        if ($request->filled('is_default') && $request->safe()->is_default === '1') {
+        if ($request->filled('is_default') && $request->safe()->is_default) {
             $this->repository->removeDefault($newPaymentMethod->id);
         }
 
@@ -47,16 +47,17 @@ class PaymentMethodController extends Controller
         return response()->json(['payment_method' => $this->repository->findById($id)]);
     }
 
-    public function edit($id): Factory|View|Application
+    public function edit($id)
     {
-        $paymentMethod = $this->repository->findById($id);
-
-        return view('', $paymentMethod);
     }
 
     public function update(PaymentMethodRequest $request, $id): RedirectResponse
     {
         $this->repository->updatePaymentMethod($request, $id);
+
+        if ($request->filled('is_default') && $request->safe()->is_default) {
+            $this->repository->removeDefault($id);
+        }
 
         return redirect()->route('payment-method.index')->with('success', 'Payment method updated successfully');
     }

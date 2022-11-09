@@ -7,6 +7,7 @@ use App\Models\UserPaymentMethod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class UserPaymentMethodRepository
 {
@@ -59,6 +60,6 @@ class UserPaymentMethodRepository
             ->where('user_id', auth()->id())
             ->where('id', '!=', $id)
             ->where('is_default', true)
-            ?->update(['is_default' => false]);
+            ->update(['is_default' => false]);
     }
 }

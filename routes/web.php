@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('dashboard'); //leffler.yasmin@example.net
+    return redirect()->route('dashboard');
 });
 
 Route::resource('payment-method', PaymentMethodController::class);
